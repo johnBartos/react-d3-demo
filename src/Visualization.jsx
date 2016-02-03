@@ -34,7 +34,7 @@ const draw = (container, containerHeight, containerWidth) => {
         .attr('width', width)
         .ease('sine')
         .each('end', repeat);
-    })();
+    }());
   }
 
   svg.selectAll('rect')

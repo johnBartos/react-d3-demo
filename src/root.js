@@ -7,6 +7,7 @@ const pretty = dimensionable(Visualization);
 
 ReactDOM.render(
   <div>
+    Resize the window!
     {React.createElement(pretty)}
     <Visualization height={100} width={window.innerWidth}/>
   </div>,
