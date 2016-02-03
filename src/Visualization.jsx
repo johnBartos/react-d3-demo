@@ -7,35 +7,50 @@ const draw = (container, containerHeight, containerWidth) => {
   container.selectAll('*').remove();
 
   const margin = {
-    top: 30,
-    right: 30,
-    bottom: 30,
-    left: 30
+    top: 10,
+    right: 10,
+    bottom: 10,
+    left: 10
   };
 
-  const height = containerHeight;
-  const width = containerWidth;
+  const height = containerHeight - margin.left - margin.right;
+  const width = containerWidth - margin.top - margin.bottom;
+  const x = d3.scale.ordinal().domain(d3.range(1)).rangePoints([0, width]);
 
   const svg = container.append('svg')
-    .attr('width', width)
-    .attr('height', height);
+		.attr('width', width + margin.left + margin.right)
+		.attr('height', height + margin.top + margin.bottom)
+		.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-  const circle = svg.append('circle')
-    .attr('cx', width / 2)
-    .attr('cy', height / 2)
-    .attr('r', 50);
+  function pulse() {
+    let rect = svg.select('rect');
+    (function repeat() {
+      rect = rect.transition()
+        .duration(1000)
+        .attr('stroke-width', 20)
+        .attr('width', width / 10)
+        .transition()
+        .duration(1000)
+        .attr('width', width)
+        .ease('sine')
+        .each('end', repeat);
+    })();
+  }
 
-  circle.transition()
-  .duration(1000)
-  .delay(500)
-  .attr('cy', height - 50)
-  .transition()
-  .attr('cx', width - 50);
+  svg.selectAll('rect')
+    .data(x.domain())
+    .enter()
+    .append('rect')
+    .attr('stroke-width', 20)
+    .attr('width', width / 10)
+    .attr('height', height)
+    .attr('x', 0)
+    .attr('y', 0)
+    .each(pulse);
 };
 
 const style = {
-  height: 200,
-  border: '1px solid red'
+  height: 100
 };
 
 class Visualization extends Component {
@@ -57,8 +72,8 @@ class Visualization extends Component {
       draw(this.state.container, this.props.height, this.props.width);
     }
 
-    return <div className="visualization-container jiggle" style={style}></div>;
+    return <div className="visualization-container" style={style}></div>;
   }
 }
 
-export default dimensionable(Visualization);
+export default Visualization;
