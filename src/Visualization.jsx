@@ -20,18 +20,20 @@ const draw = (container, containerHeight, containerWidth) => {
   const svg = container.append('svg')
 		.attr('width', width + margin.left + margin.right)
 		.attr('height', height + margin.top + margin.bottom)
-		.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+		.append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   function pulse() {
     let rect = svg.select('rect');
     (function repeat() {
       rect = rect.transition()
-        .duration(1000)
         .attr('stroke-width', 20)
         .attr('width', width / 10)
+        .attr('fill', 'black')
         .transition()
         .duration(1000)
         .attr('width', width)
+        .attr('fill', '#663399')
         .ease('sine')
         .each('end', repeat);
     }());
