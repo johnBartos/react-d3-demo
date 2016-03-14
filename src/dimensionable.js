@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 
 const dimensions = node => {
-  const dim = node.getBoundingClientRect();
+  const { width, height } = node.getBoundingClientRect();
   return {
-    width: dim.width,
-    height: dim.height
+    width,
+    height
   };
 };
 
@@ -24,7 +24,7 @@ export default ComposedComponent => class extends Component {
 
   componentDidMount() {
     const node = ReactDom.findDOMNode(this);
-    this.setState(Object.assign({}, dimensions(node), { node }));
+    this.setState({ ...dimensions(node), node });
     window.addEventListener('resize', this.handleResize);
   }
 
@@ -34,7 +34,10 @@ export default ComposedComponent => class extends Component {
 
   render() {
     return (
-      <ComposedComponent height = {this.state.height} width = {this.state.width} {...this.props} />
+      <ComposedComponent
+      height = {this.state.height}
+      width = {this.state.width}
+      {...this.props} />
     );
   }
 };
