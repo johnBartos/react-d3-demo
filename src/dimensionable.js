@@ -35,8 +35,9 @@ export default ComposedComponent => class extends Component {
   render() {
     return (
       <ComposedComponent
-      height = {this.state.height}
-      width = {this.state.width}
+      node={this.state.node}
+      height={this.state.height}
+      width={this.state.width}
       {...this.props} />
     );
   }

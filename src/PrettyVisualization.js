@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDom from 'react-dom';
 import d3 from 'd3';
 import dimensionable from './dimensionable';
 
@@ -55,7 +54,7 @@ const style = {
   height: 100
 };
 
-class Visualization extends Component {
+class PrettyVisualization extends Component {
   constructor(props) {
     super(props);
   }
@@ -65,17 +64,13 @@ class Visualization extends Component {
     width: PropTypes.number.isRequired
   };
 
-  componentDidMount() {
-    this.setState({ container: d3.select(ReactDom.findDOMNode(this)) });
-  }
-
   render() {
-    if (this.state) {
-      draw(this.state.container, this.props.height, this.props.width);
+    if (this.props.node) {
+      draw(d3.select(this.props.node), this.props.height, this.props.width);
     }
 
     return <div className="visualization-container" style={style}></div>;
   }
 }
 
-export default Visualization;
+export default dimensionable(PrettyVisualization);
